@@ -1,6 +1,6 @@
 # 🦇 BatCave
 
-**BatCave** est une application web développée avec **Symfony**, inspirée de Twitter 🐦. Partagez vos pensées, interagissez avec les autres et personnalisez votre profil pour montrer votre style !
+**BatCave** est une application web développée avec **Symfony**, inspirée de Twitter.
 
 ---
 
@@ -77,3 +77,10 @@ symfony server:start
 6. **Accéder à l’application** :
    Ouvrir [http://localhost:8000](http://localhost:8000) dans votre navigateur.
 
+---
+
+## 📷 Aperçu 
+
+![BatCave Screenshot](/public/img/demo/demo2.png)
+![BatCave Screenshot](/public/img/demo/demo3.png)
+![BatCave Screenshot](/public/img/demo/demo4.png)
