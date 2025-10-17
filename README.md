@@ -13,9 +13,8 @@
 * **📝 Inscription & Connexion** : Créez un compte ou connectez-vous facilement.
 * **📣 BatPosts** : Publiez vos pensées, idées ou actualités.
 * **❤️ Interactions sociales** :
-
-* **👍 BatLike** : Montrez votre appréciation pour les BatPosts.
-* **💬 Réponses** : Répondez aux posts et engagez des discussions.
+  * **👍 BatLike** : Montrez votre appréciation pour les BatPosts.
+  * **💬 Réponses** : Répondez aux BatPosts et engagez des discussions.
 * **🎨 Personnalisation du BatProfil** :
   * Ajoutez une **description personnelle**.
   * Téléchargez une **photo de profil** et un **background**.
