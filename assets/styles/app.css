@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ubuntu-light {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.ubuntu-regular {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.ubuntu-medium {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.ubuntu-medium-plus {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.ubuntu-bold {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.ubuntu-light-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.ubuntu-regular-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.ubuntu-medium-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.ubuntu-bold-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.ubuntu-sans-light {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.ubuntu-sans-regular {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.ubuntu-sans-medium {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.ubuntu-sans-medium-plus {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.ubuntu-sans-bold {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.ubuntu-sans-light-italic {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.ubuntu-sans-regular-italic {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.ubuntu-sans-medium-italic {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.ubuntu-sans-bold-italic {
+    font-family: "Ubuntu Sans", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: white; 
+    transition: background-color 5000s ease-in-out 0s !important;
+}

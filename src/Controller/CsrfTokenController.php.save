@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+
+class CsrfTokenController extends AbstractController
+{
+    private $csrfTokenManager;
+
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager)
+    {
+        $this->csrfTokenManager = $csrfTokenManager;
+    }
+
+    #[Route('/api/csrf-token', name: 'api_csrf_token', methods: ['GET'])]
+    public function getCsrfToken(): Response
+    {
+        $token = $this->csrfTokenManager->getToken('authenticate')->getValue();
+
+        // Créer une réponse
+        $response = new Response();
+        
+        // Définir le cookie CSRF
+        $response->headers->setCookie(
+            new \Symfony\Component\HttpFoundation\Cookie('XSRF-TOKEN', $token, time() + 3600, '/', null, false, true)
+        );
+
+        // Optionnel : Vous pouvez également renvoyer une réponse JSON si vous le souhaitez
+        $response->setContent(json_encode(['csrf_token' => $token]));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    #[Route('/api/submit-form', name: 'api_submit_form', methods: ['POST'])]
+    public function submitForm(Request $request): JsonResponse
+    {
+        $token = $request->headers->get('X-CSRF-TOKEN');
+
+        // Vérifier le token CSRF
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $token))) {
+            return new JsonResponse(['error' => 'Token CSRF invalide'], 403);
+        }
+
+        return new JsonResponse(['success' => true]);
+    }
+}

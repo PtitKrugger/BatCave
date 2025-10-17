@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres{% endblock %} 
+
+{% block body %}
+
+{% include 'header.html.twig' %}    
+
+{{ form_start(form) }}
+    <div class="flex min-h-[calc(100vh-4rem)] bg-gray-100 text-white ubuntu-sans-medium" style="background: linear-gradient(to right, rgba(32, 32, 32, 1) 0%, rgba(5, 5, 5, 1) 35%, rgba(5, 5, 5, 1) 65%, rgba(32, 32, 32, 1) 100%);">
+        <div class="h-[75vh] w-2/5 mx-auto bg-[#1a1a1a] shadow-md overflow-hidden mt-8 rounded-t-2xl rounded-b-2xl border-x-[1px] border-b-[1px] border-neutral-800">
+            <div id="coverImage" class="h-48 w-full relative rounded-t-2xl">
+                {{ form_widget(form.profileBackground, {'attr': {'class': 'hidden', 'disabled': 'true'}}) }}</img>
+                <label for="user_profileBackground_file">
+                    {% if user.profileBackgroundLink %}
+                        <img id="profileBackground" src="/img/uploads/pbi{{ asset(user.profileBackgroundLink) }}"  class="w-full h-full object-cover rounded-t-2xl border-2 cursor-default" style="border-color: {{ user.profileBorderColor }}" draggable="false">                
+                    {% else %}
+                        <img id="profileBackground" src="" class="bg-black rounded-t-2xl w-full h-full object-cover border-2 cursor-default" style="border-color: {{ user.profileBorderColor }}" draggable="false">                
+                    {% endif %}
+                </label>
+
+                <div class="absolute bottom-0 left-0 right-0 flex justify-center items-center transform translate-y-1/2 ">
+                    {{ form_widget(form.profilePicture, {'attr': {'class': 'hidden', 'disabled': 'true'}}) }}</img>
+                    <label for="user_profilePicture_file" class="cursor-pointer">
+                        <img id="profilePicture" src="{{ user.profilePictureLink ? '/img/uploads/pfp' ~ asset(user.profilePictureLink) : '/img/uploads/pfp/default.gif' }}" 
+                            class="w-32 h-32 rounded-full border-2 cursor-default" 
+                            style="border-color: {{ user.profileBorderColor }}"
+                            draggable="false">                        
+                    </label>
+
+                    <div class="absolute cursor-pointer flex items-center justify-center left-2 bottom-7">
+                        {{ form_widget(form.profileBorderColor, {'attr': {'class': 'h-5 w-7 border border-slate-200 hidden cursor-default', 'disabled': 'true'}})}}
+                    </div>
+
+                    <div id="applyChangesContainer" class="absolute cursor-pointer flex items-center justify-center right-[84px] bottom-7 hidden">
+                        <button type="submit">
+                            <svg viewBox="-2.16 -2.16 40.32 40.32" width="20px" height="20px" class="text-white transition-colors duration-300 hover:text-green-600">
+                                <path stroke="currentColor" fill="currentColor" d="M34.459 1.375a2.999 2.999 0 0 0-4.149.884L13.5 28.17l-8.198-7.58a2.999 2.999 0 1 0-4.073 4.405l10.764 9.952s.309.266.452.359a2.999 2.999 0 0 0 4.15-.884L35.343 5.524a2.999 2.999 0 0 0-.884-4.149z" stroke-width="1.5"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="revertChangesContainer" class="absolute cursor-pointer flex items-center justify-center right-[52px] bottom-7 hidden">
+                        <svg width="20px" height="20px" viewBox="0 0 24.00 24.00" class="text-white transition-colors duration-300 hover:text-red-600">
+                            <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path> 
+                        </svg>
+                    </div>
+                    <div id="editButtonContainer" class="absolute cursor-pointer flex items-center justify-center right-2 bottom-7">
+                        <svg id="editSvg" viewBox="0 0 512 512" height="20px" width="20px" class="text-white transition-colors duration-300 hover:text-sky-500">
+                            <path fill="currentColor" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Information -->
+            <div class="p-4 pt-16 border-b-2 border-neutral-800">
+                <div class="flex justify-center">
+                    <div class="flex flex-col gap-2">
+                        <h1 class="mt-1 text-xl font-bold flex items-center justify-center">
+                            <span class="flex items-center justify-center">
+                                {{ form_widget(form.username, {'attr': {'class': 'w-full text-center text-white ubuntu-sans-bold bg-transparent border-none appearance-none focus:outline-none', 'disabled': 'true', 'autocomplete': 'off'}}) }}
+                            </span>
+                        </h1>
+                        <p class="text-center">
+                            {{ form_widget(form.description, {'attr': {'class': 'w-full text-center text-white bg-transparent border-none appearance-none focus:outline-none resize-none', 'disabled': 'true', 'autocomplete': 'off', 'placeholder': 'Description par défaut'}}) }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const usernameInput = document.getElementById('user_username');
+            const descriptionInput = document.getElementById('user_description');
+            const profilePictureInput = document.getElementById('user_profilePicture_file');
+            const profileBackgroundInput = document.getElementById('user_profileBackground_file');
+            const profileBorderColorInput = document.getElementById('user_profileBorderColor');
+            const profilePicture = document.getElementById('profilePicture');
+            const profileBackground = document.getElementById('profileBackground');
+            const coverImage = document.getElementById('coverImage');
+            const userSave = {username: usernameInput.value, description: descriptionInput.value, profilePictureLink: profilePicture.getAttribute("src"), profileBackgroundLink: profileBackground.getAttribute("src"), profileBorderColor: profileBorderColorInput.value}
+
+            const editSvg = document.getElementById('editSvg');
+            const editButtonContainer = document.getElementById('editButtonContainer');
+            const applyChangesContainer = document.getElementById('applyChangesContainer');
+            const revertChangesContainer = document.getElementById('revertChangesContainer');
+
+            // Affiche l'aperçu de l'image sélectionnée
+            profilePictureInput.addEventListener('change', function(event) {
+                const [file] = event.target.files;
+                if (file) {
+                    profilePicture.src = URL.createObjectURL(file);
+                }
+            });
+
+            profileBackgroundInput.addEventListener('change', function(event) {
+                const [file] = event.target.files;
+                if (file) {
+                    profileBackground.src = URL.createObjectURL(file);
+                }
+            });
+
+            profileBorderColorInput.addEventListener('input', (event) => {
+                const selectedColor = event.target.value;
+                coverImage.setAttribute("class", coverImage.className.replace(/border-\[.*?\]/, `border-[${selectedColor}]`))
+                profilePicture.style.borderColor = selectedColor;
+                profileBackground.style.borderColor = selectedColor;
+            });
+
+            const showElements = (elements) => {
+                elements.forEach(el => el.classList.remove('hidden'));
+            }
+            
+            const hideElements = (elements) => {
+                elements.forEach(el => el.classList.add('hidden'))
+            }
+
+            const enableElements = (elements) => {
+                elements.forEach(el => el.removeAttribute('disabled'));
+            }
+
+            const disableElements = (elements) => {
+                elements.forEach(el => el.setAttribute('disabled', 'true'));
+            }
+            
+            revertChangesContainer.addEventListener('click', () => {
+                const elementsToHide = [profileBorderColorInput, applyChangesContainer, revertChangesContainer]
+                const elementsToDisable = [usernameInput, descriptionInput, profilePictureInput, profileBackgroundInput, profileBorderColorInput]
+                hideElements(elementsToHide)
+                disableElements(elementsToDisable)
+
+                profilePicture.setAttribute("class", `${profilePicture.className.replace('cursor-pointer', 'cursor-default')}`)
+                profileBackground.setAttribute("class", `${profileBackground.className.replace('cursor-pointer', 'cursor-default')}`)
+                usernameInput.style.backgroundColor = ''
+                descriptionInput.style.backgroundColor = ''
+
+                editSvg.setAttribute("class", editSvg.className.baseVal.replace('text-sky-500', 'text-white'))
+                coverImage.setAttribute("class", coverImage.className.replace(/border-\[.*?\]/, `border-[${userSave.profileBorderColor}]`))
+                profilePicture.style.borderColor = userSave.profileBorderColor;
+                profileBackground.style.borderColor = userSave.profileBorderColor;
+
+                usernameInput.value = userSave.username
+                descriptionInput.value = userSave.description
+                profilePicture.src = userSave.profilePictureLink
+                profileBackground.src = userSave.profileBackgroundLink
+                profileBorderColorInput.value = userSave.profileBorderColor
+            })
+
+            editButtonContainer.addEventListener('click', () => {
+                const elementsToShow = [profileBorderColorInput, applyChangesContainer, revertChangesContainer]
+                const elementsToEnable = [usernameInput, descriptionInput, profilePictureInput, profileBackgroundInput, profileBorderColorInput]
+                showElements(elementsToShow)
+                enableElements(elementsToEnable)
+
+                profilePicture.setAttribute("class", `${profilePicture.className.replace('cursor-default', 'cursor-pointer')}`)
+                profileBackground.setAttribute("class", `${profileBackground.className.replace('cursor-default', 'cursor-pointer')}`)
+                profileBorderColorInput.setAttribute("class", `${profileBorderColorInput.className.replace('cursor-default', 'cursor-pointer')}`)
+
+                usernameInput.style.backgroundColor = '#282828'
+                descriptionInput.style.backgroundColor = '#282828'
+
+                editSvg.setAttribute("class", editSvg.className.baseVal.replace('text-white', 'text-sky-500'))
+            });
+        });
+    </script>
+{% endblock %}

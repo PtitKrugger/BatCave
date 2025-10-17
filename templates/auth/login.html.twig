@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div>
+    <div class="absolute inset-0 overflow-hidden">
+        <video autoplay muted loop preload="auto" class="object-cover w-full h-full">
+            <source src="/bg-vid.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="relative z-10 flex items-center justify-center h-screen">
+        <form method="post" autocomplete="true" class="w-80 rounded-2xl text-white p-8 bg-gradient-to-tr from-gray-700 via-gray-900 to-black min-h scale-110">
+            <h2 class="mb-4 text-2xl font-semibold text-center ubuntu-medium-plus">Connexion</h2>
+
+            <div class="flex flex-col items-center justify-center mb-4 text-left ubuntu-sans-medium">
+                <span>E-Mail</span>
+                <div class="items-center justify-center mt-2">
+                    <div class="flex items-center py-2 border-b border-gray-500">
+                        <svg height="20px" width="20px" class="ml-2" aria-hidden="true" viewBox="0 0 512 512">
+                            <path fill="white" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"></path>
+                        </svg>
+                        <input type="email" name="email" id="inputEmail" value="{{ last_username }}" placeholder="Entrez votre e-mail" autocomplete="email" class="w-full px-2 py-1 mr-3 leading-tight text-white bg-transparent border-none appearance-none placeholder:text-gray-400 placeholder:text-sm focus:outline-none" required autofocus>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center mb-4 text-left ubuntu-sans-medium">
+                <span>Mot de passe</span>
+                <div class="items-center justify-center mt-2">
+                    <div class="flex items-center py-2 border-b border-gray-500">
+                        <svg height="20px" width="20px" class="ml-2" aria-hidden="true" focusable="false" viewBox="0 0 512 512" width="512" height="512">
+                            <path fill="white" d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"></path>
+                        </svg>
+                        <input type="password" name="password" id="inputPassword" placeholder="Entrez votre mot de passe" autocomplete="current-password" class="w-full px-2 py-1 mr-3 leading-tight bg-transparent border-none appearance-none placeholder:text-gray-400 placeholder:text-sm focus:outline-none" required>
+                    </div>
+                    <div class="text-right">
+                        <a href="#" class="text-xs font-bold text-white ubuntu-sans-bold">Mot de passe oublié ?</a>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="flex flex-col items-center justify-center mb-8">
+                <button type="submit" class="flex gap-3 py-3 mt-4 font-semibold text-white duration-200 border border-gray-600 rounded-full cursor-pointer bg-gradient-to-r from-gray-800 to-black px-7 hover:scale-105 hover:text-gray-500 hover:border-gray-800 hover:from-black hover:to-gray-900">
+                    Se connecter
+                </button>
+            </div>
+
+            <div class="mb-auto text-center">
+                <p class="ubuntu-sans-regular text-sm">Pas encore de compte ?</p>
+                <a href="{{ path('app_register') }}" class="font-bold ubuntu-sans-bold text-white">S'inscrire</a>
+            </div>
+        </form>
+    </div>    
+</div>
+
+<!--{% if error %}
+    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}-->
+{% endblock %}

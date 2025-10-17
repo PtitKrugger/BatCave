@@ -1,0 +1,80 @@
+{% for comment in comments %} 
+    <div class="border-t-[1px] border-neutral-800 ubuntu-sans-medium">
+        <div class="relative ml-4 custom-left-border p-4">
+            <div class="p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <a href="/profile/{{ comment.author.username }}" draggable="false">
+                            {% if comment.author.profilePictureLink %}
+                                <img src="/img/uploads/pfp{{ asset(comment.author.profilePictureLink) }}" class="w-12 h-12 rounded-full" draggable="false">
+                            {% else %}
+                                <img src="/img/uploads/pfp/default.gif" class="w-12 h-12 rounded-full" draggable="false">
+                            {% endif %}
+                        </a>
+                        <a href="/profile/{{ comment.author.username }}" draggable="false">
+                            <p class="text-white ubuntu-sans-bold no-underline">{{ comment.author.username }}</p>
+                        </a>
+                    </div>
+
+                    <div class="text-gray-400 text-sm">
+                        {% set now = "now" | date("Y-m-d") %}
+                        {% set yesterday = "now" | date_modify("-1 day") | date("Y-m-d") %}
+                        {% set commentDate = comment.createdAt | date("Y-m-d") %}
+                        {% set commentYear = comment.createdAt | date("Y") %}
+                        {% set currentYear = "now" | date("Y") %}
+                        {% if now == commentDate %}
+                            Aujourd'hui à {{ comment.createdAt | date('H:i') }}
+                        {% elseif yesterday == commentDate %}
+                            Hier à {{ comment.createdAt | date('H:i') }}
+                        {% else %}
+                            {% if commentYear != currentYear %}
+                                {{ comment.createdAt | format_datetime(locale='fr', pattern='d MMMM yyyy') }}
+                            {% else %}
+                                {{ comment.createdAt | format_datetime(locale='fr', pattern='d MMMM') }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="min-h-15 p-4 pt-0">
+                <div class="text-gray-100 break-words">
+                    {{ comment.content }}
+                </div>
+            </div>
+
+            <div class="min-h-15 p-4 pt-2">
+                <div class="flex align-center text-gray-100 break-words">
+                    {# BatLike #}
+                    <div id="like-{{comment.id}}" class="flex align-center text-gray-100 break-words">
+                        {% if comment.likedBy.contains(app.user) %}
+                            <svg onclick="toggleLikeComment({{comment.id}})" viewBox="0 0 512 512" height="20px" width="20px" data-liked="true" class="likeSvg text-blue-500 transition-colors duration-300 cursor-pointer">
+                                <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"></path>
+                            </svg>
+                        {% else %}
+                            <svg onclick="toggleLikeComment({{comment.id}})" viewBox="0 0 512 512" height="20px" width="20px" data-liked="false" class="likeSvg text-white transition-colors duration-300 hover:text-blue-500 cursor-pointer">
+                                <path fill="currentColor" d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"/>
+                            </svg>
+                        {% endif %}
+                        <span class="likeCount ml-1">{{ comment.getLikedBy|length }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+{% endfor %}
+
+{% block stylesheets %} 
+<style>
+    .custom-left-border::before {
+        content: "";
+        position: absolute;
+        top: 12.5%; /* Décale le début de la bordure */
+        left: 0; /* Positionne la bordure à gauche de l'élément */
+        height: 75%; /* Ajuste la hauteur de la bordure */
+        width: 2px; /* Largeur de la bordure */
+        background-color: rgb(59 130 246); /* Couleur de la bordure */
+    }
+</style>
+{% endblock %}
+

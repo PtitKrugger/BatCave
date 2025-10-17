@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BatCave{% endblock %}
+
+{% block body %}
+
+{% include 'header.html.twig' %}    
+
+<div class="flex min-h-[calc(100vh-4rem)] bg-gray-100 text-white" style="background: linear-gradient(to right, rgba(32, 32, 32, 1) 0%, rgba(5, 5, 5, 1) 35%, rgba(5, 5, 5, 1) 65%, rgba(32, 32, 32, 1) 100%);">
+    <div id="postsContainer" class="w-2/5 h-full mx-auto bg-[#1a1a1a] shadow-md overflow-hidden my-8 rounded-t-2xl rounded-b-2xl border-x-[1px] border-b-[1px] border-neutral-800">
+        {% include 'post/_posts.html.twig' with {'posts': posts} %}
+        <script src="{{ asset('js/post.js') }}"></script>
+    </div>
+</div>  
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.scrollTo(0, 0);
+    });
+
+    let offset = 10;
+    const limit = 10;
+    let hasMorePosts = true;
+
+    window.addEventListener('scroll', () => {
+        if (((window.innerHeight + window.scrollY) >= document.body.offsetHeight) && hasMorePosts) {
+            loadMorePosts();
+        }
+    });
+
+    function loadMorePosts() {
+        fetch(`/post/load-more?offset=${offset}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('postsContainer').insertAdjacentHTML('beforeend', data.html);
+                offset += limit;
+
+                if (!data.hasMore) {
+                    hasMorePosts = false;
+                }
+            })
+            .catch(error => console.error('Erreur lors du chargement des posts:', error));
+    }
+</script>
+{% endblock %}

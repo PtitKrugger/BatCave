@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post de {{post.author.username}} {% endblock %}
+
+{% block body %}
+
+{% include 'header.html.twig' %}    
+
+<div class="flex min-h-[calc(100vh-4rem)] bg-gray-100 text-white" style="background: linear-gradient(to right, rgba(32, 32, 32, 1) 0%, rgba(5, 5, 5, 1) 35%, rgba(5, 5, 5, 1) 65%, rgba(32, 32, 32, 1) 100%);">
+    <div class="w-2/5 h-full mx-auto bg-[#1a1a1a] shadow-md overflow-hidden mt-8 rounded-t-2xl rounded-b-2xl border-[1px] border-neutral-800">
+        {% include 'post/_post.html.twig' with {'post': post} %}
+
+        {# Formulaire Commentaire #}
+        {{ form_start(form, {'attr': {'class': 'flex flex-row items-center w-full space-x-4 p-4 py-6 border-b-[1px] border-neutral-800'}}) }}
+            {% if app.user.profilePictureLink %}
+                <img src="/img/uploads/pfp{{ asset(app.user.profilePictureLink) }}" class="w-12 h-12 rounded-full" draggable="false">
+            {% else %}
+                <img src="/img/uploads/pfp/default.gif" class="w-12 h-12 rounded-full" draggable="false">
+            {% endif %}
+
+            {{ form_widget(form.content, {'attr': {'placeholder': 'Blabla...', 'class': 'w-full h-20 p-3 bg-[#282828] border border-gray-600 rounded-md text-white ubuntu-sans-medium placeholder:text-gray-400 placeholder:text-sm focus:outline-none focus:border-white'}}) }}
+
+            <button type="submit" class="flex items-center gap-3 px-8 py-3 font-semibold text-white duration-200 border border-gray-600 rounded-full bg-[#282828] hover:scale-110 hover:border-white">
+                Poster
+            </button>
+        {{ form_end(form) }}
+
+        <div id="commentsContainer">
+            {% include 'post/_comments.html.twig' with {'comments': post.comments} %}
+        </div>
+        <script src="{{ asset('js/comment.js') }}"></script>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.scrollTo(0, 0);
+    });
+
+    let offset = 10;
+    const limit = 10;
+    let hasMoreComments = true;
+
+    window.addEventListener('scroll', () => {
+        if (((window.innerHeight + window.scrollY) >= document.body.offsetHeight) && hasMoreComments) {
+            loadMoreComments();
+        }
+    });
+
+    function loadMoreComments() {
+        const path = window.location.pathname;
+        const postId = path.split('/').pop();
+
+        fetch(`/post/${postId}/load-more-comments?offset=${offset}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('commentsContainer').insertAdjacentHTML('beforeend', data.html);
+                offset += limit;
+
+                if (!data.hasMore) {
+                    hasMoreComments = false;
+                }
+            })
+            .catch(error => console.error('Erreur lors du chargement des commentaires:', error));
+    }
+</script>
+{% endblock %}
